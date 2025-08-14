@@ -3,6 +3,7 @@
 
 # NeoSDA 
 @ https://neosda.netlify.app/
+
 **AI-Powered Education for Tomorrow's Innovators** 
 
 NeoSDA revolutionizes learning with intelligent AI assistance, personalized resources, and comprehensive syllabus coverage for ISC Class 12 students.

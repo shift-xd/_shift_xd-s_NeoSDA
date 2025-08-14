@@ -2,8 +2,7 @@
 <img width="336" height="46" alt="image" src="https://github.com/user-attachments/assets/5cd234a5-dbbd-4265-9eb3-fb2b2c5025b9" />
 
 # NeoSDA 
-@ neosda.netlify.app
-
+@ https://neosda.netlify.app/
 **AI-Powered Education for Tomorrow's Innovators** 
 
 NeoSDA revolutionizes learning with intelligent AI assistance, personalized resources, and comprehensive syllabus coverage for ISC Class 12 students.

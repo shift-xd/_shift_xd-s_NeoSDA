@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoSDA - AI-Powered Education</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0071e3;
+            --primary-dark: #0062c4;
+            --primary-light: rgba(0, 113, 227, 0.1);
+            --secondary: #bf4800;
+            --accent: #ff2d55;
+            --text: #1d1d1f;
+            --text-light: #86868b;
+            --bg: #f5f5f7;
+            --card-bg: #ffffff;
+            --border: #d2d2d7;
+            --success: #34c759;
+            --error: #ff3b30;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --radius: 22px;
+            --radius-small: 14px;
+            --transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(0, 113, 227, 0.05) 0%, rgba(0, 113, 227, 0) 20%);
+            z-index: -1;
+        }
+
+        /* Header styles */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .logo .beta {
+            font-size: 14px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+            font-weight: 600;
+            transform: translateY(-5px);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 18px;
+            position: relative;
+            padding: 8px 0;
+            transition: var(--transition);
+        }
+
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--primary);
+        }
+
+        nav ul li a:hover:after,
+        nav ul li a.active:after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 120px 30px 100px;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7ff 0%, #e6f0ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 16px 38px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            transform: translateY(0);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 25px rgba(0, 113, 227, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 35px rgba(0, 113, 227, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .hero-image {
+            max-width: 800px;
+            margin: 70px auto 0;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+            transform: perspective(1000px) rotateX(5deg);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-image:hover {
+            transform: perspective(1000px) rotateX(0);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-image img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Features section */
+        .features {
+            padding: 120px 30px;
+            background: white;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 70px;
+        }
+
+        .section-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.03em;
+        }
+
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 45px 35px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--primary), #5ac8fa);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 38px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 20px rgba(0, 113, 227, 0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* AI Chat section */
+        .ai-chat {
+            padding: 120px 30px;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            position: relative;
+        }
+
+        .chat-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+            border: 1px solid var(--border);
+            position: relative;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .chat-header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 35px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-header i {
+            font-size: 32px;
+            margin-right: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .chat-header .tag {
+            background: white;
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 20px;
+        }
+
+        .chat-messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="rgba(0, 113, 227, 0.03)" stroke-width="0.5"/></svg>');
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 20px 25px;
+            border-radius: var(--radius-small);
+            position: relative;
+            animation: fadeIn 0.5s ease;
+            line-height: 1.6;
+            font-size: 17px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            animation-delay: 0.1s;
+        }
+
+        .ai-message {
+            background: #f8f9ff;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            animation-delay: 0.2s;
+        }
+
+        .ai-message .author {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 18px;
+        }
+
+        .message-image {
+            max-width: 300px;
+            border-radius: 12px;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            background: #fafafa;
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            background: white;
+            border-radius: var(--radius-small);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 18px 25px;
+            border: none;
+            outline: none;
+            font-size: 17px;
+            background: transparent;
+        }
+
+        .upload-btn {
+            padding: 0 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 22px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-btn:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 35px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .typing-indicator {
+            padding: 15px 25px;
+            background: #f0f4ff;
+            border-radius: var(--radius-small);
+            align-self: flex-start;
+            display: none;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin: 0 4px;
+            animation: typing 1.2s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Syllabus section */
+        .syllabus {
+            padding: 120px 30px;
+            background: white;
+            position: relative;
+        }
+
+        .syllabus-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 14px 35px;
+            background: transparent;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 113, 227, 0.3);
+        }
+
+        .syllabus-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 45px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            animation-delay: 0.4s;
+        }
+
+        .subject {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .subject.active {
+            display: block;
+        }
+
+        .subject h3 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .syllabus-details {
+            margin-bottom: 35px;
+        }
+
+        .syllabus-details h4 {
+            font-size: 22px;
+            margin: 25px 0 15px;
+            color: var(--text);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .syllabus-details h4 i {
+            margin-right: 12px;
+            color: var(--primary);
+            background: var(--primary-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .syllabus-details ul {
+            padding-left: 30px;
+            color: var(--text-light);
+        }
+
+        .syllabus-details li {
+            margin-bottom: 12px;
+            font-size: 17px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .syllabus-details li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        /* Resources section */
+        .resources {
+            padding: 120px 30px;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            transform: translateY(30px);
+            opacity: 0;
+        }
+
+        .resource-card:nth-child(1) { animation: fadeUp 0.6s ease 0.1s forwards; }
+        .resource-card:nth-child(2) { animation: fadeUp 0.6s ease 0.2s forwards; }
+        .resource-card:nth-child(3) { animation: fadeUp 0.6s ease 0.3s forwards; }
+        .resource-card:nth-child(4) { animation: fadeUp 0.6s ease 0.4s forwards; }
+
+        .resource-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .resource-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), #5ac8fa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            transition: var(--transition);
+        }
+
+        .resource-card:hover .resource-image::before {
+            transform: rotate(45deg) translate(20%, 20%);
+        }
+
+        .resource-content {
+            padding: 35px;
+        }
+
+        .resource-card h3 {
+            font-size: 24px;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .resource-card p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 17px;
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 17px;
+        }
+
+        .resource-link:hover {
+            color: var(--primary-dark);
+            transform: translateX(8px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 80px 30px 40px;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-column h3 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .footer-column p, 
+        .footer-column a {
+            color: #a1a1a6;
+            margin-bottom: 15px;
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 17px;
+        }
+
+        .footer-column a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            font-size: 20px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 50px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #86868b;
+            font-size: 16px;
+        }
+
+        .creator {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive design */
+        @media (max-width: 1100px) {
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.6rem;
+            }
+            
+            .hero-image {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 900px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero {
+                padding: 100px 20px 70px;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.3rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .section-title {
+                font-size: 2.3rem;
+            }
+            
+            .chat-messages {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-container {
+                padding: 0 20px;
+            }
+            
+            .hero {
+                padding: 80px 20px 50px;
+            }
+            
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .feature-card, 
+            .resource-card {
+                padding: 30px 20px;
+            }
+            
+            .syllabus-content {
+                padding: 30px 20px;
+            }
+            
+            .tab-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+            
+            .chat-header {
+                padding: 20px;
+            }
+            
+            .chat-header h2 {
+                font-size: 22px;
+            }
+            
+            .chat-header .tag {
+                display: none;
+            }
+            
+            .message {
+                max-width: 95%;
+                padding: 15px 20px;
+                font-size: 16px;
+            }
+        }
+
+        /* Mobile menu */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(-100%);
+            transition: var(--transition);
+        }
+
+        .mobile-nav.active {
+            transform: translateY(0);
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav ul li {
+            margin: 30px 0;
+        }
+
+        .mobile-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 32px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .mobile-nav ul li a:hover {
+            color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-menu:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Neo<span>SDA</span><span class="beta">AI</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#ai-chat" class="nav-link">AI Chat</a></li>
+                    <li><a href="#syllabus" class="nav-link">Syllabus</a></li>
+                    <li><a href="#resources" class="nav-link">Resources</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <i class="fas fa-times close-menu"></i>
+        <ul>
+            <li><a href="#home" class="nav-link">Home</a></li>
+            <li><a href="#ai-chat" class="nav-link">AI Chat</a></li>
+            <li><a href="#syllabus" class="nav-link">Syllabus</a></li>
+            <li><a href="#resources" class="nav-link">Resources</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1><span class="hero-gradient">AI-Powered Education</span> for Tomorrow's Innovators</h1>
+            <p>NeoSDA revolutionizes learning with intelligent AI assistance, personalized resources, and comprehensive syllabus coverage for ISC Class 12 students.</p>
+            <div class="hero-buttons">
+                <a href="#ai-chat" class="btn btn-primary"><i class="fas fa-robot"></i> Start Chatting</a>
+                <a href="#resources" class="btn btn-secondary"><i class="fas fa-book-open"></i> Explore Resources</a>
+            </div>
+        </div>
+        <div class="hero-image animate-on-scroll">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1470&auto=format&fit=crop" alt="AI Education">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose NeoSDA?</h2>
+            <p class="section-subtitle">Our platform combines cutting-edge AI technology with educational excellence</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>Intelligent AI Assistant</h3>
+                <p>NEOSDA, created by Hardrik Thomas (_shift_xd_), provides personalized learning assistance with syllabus context awareness for Physics, Chemistry, and Mathematics.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Syllabus Integration</h3>
+                <p>All responses are tailored to the ISC Class 12 syllabus for Physics, Chemistry, and Mathematics with detailed explanations.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <h3>Image Analysis</h3>
+                <p>Upload images for analysis and conversion to base64 for AI processing and contextual understanding of diagrams and problems.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Premium Resources</h3>
+                <p>Access curated study materials, practice questions, and official syllabus documents from CISCE Board.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chat Section -->
+    <section id="ai-chat" class="ai-chat">
+        <div class="section-header">
+            <h2 class="section-title">NEOSDA AI Assistant</h2>
+            <p class="section-subtitle">Ask anything related to your studies or beyond</p>
+        </div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <i class="fas fa-robot"></i>
+                <h2>NEOSDA Assistant <span class="tag">Powered by Gemma 3N</span></h2>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message ai-message">
+                    <span class="author">NEOSDA</span>
+                    Hello! I'm NEOSDA, created by Hardrik Thomas (_shift_xd_). I'm here to help with your ISC Class 12 studies in Physics, Chemistry, and Mathematics. How can I assist you today?
+                </div>
+            </div>
+            <div class="typing-indicator" id="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="chat-input-area">
+                <div class="input-group">
+                    <input type="text" class="chat-input" id="user-input" placeholder="Ask me anything about Physics, Chemistry or Math...">
+                    <button class="upload-btn" id="upload-btn">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                </div>
+                <button class="send-btn" id="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Syllabus Section -->
+    <section id="syllabus" class="syllabus">
+        <div class="section-header">
+            <h2 class="section-title">ISC Class 12 Syllabus</h2>
+            <p class="section-subtitle">Comprehensive syllabus for Physics, Chemistry & Mathematics</p>
+        </div>
+        <div class="syllabus-tabs">
+            <button class="tab-btn active" data-subject="physics">Physics</button>
+            <button class="tab-btn" data-subject="chemistry">Chemistry</button>
+            <button class="tab-btn" data-subject="math">Mathematics</button>
+        </div>
+        <div class="syllabus-content">
+            <div class="subject active" id="physics">
+                <h3>Physics Syllabus 2025-26</h3>
+                <div class="syllabus-details">
+                    <h4><i class="fas fa-flask"></i> Theory (70 marks, 3 hours)</h4>
+                    <ul>
+                        <li>Electrostatics (14 marks): Coulomb’s law, electric field, potential, capacitors.</li>
+                        <li>Current Electricity (8 marks): Ohm’s law, Kirchhoff’s laws, Wheatstone bridge.</li>
+                        <li>Magnetic Effects & Magnetism (8 marks): Biot-Savart law, Ampere’s law, magnetic properties.</li>
+                        <li>Electromagnetic Induction & AC (8 marks): Faraday’s laws, LCR circuits, resonance.</li>
+                        <li>Electromagnetic Waves (3 marks): Properties, electromagnetic spectrum.</li>
+                        <li>Optics (14 marks): Ray optics (reflection, refraction, lenses), wave optics (interference, diffraction).</li>
+                        <li>Dual Nature of Matter (6 marks): Photoelectric effect, de Broglie wavelength.</li>
+                        <li>Atoms & Nuclei (7 marks): Bohr model, radioactivity, nuclear reactions.</li>
+                        <li>Electronic Devices (7 marks): Semiconductors, diodes, transistors, logic gates.</li>
+                    </ul>
+                </div>
+                <div class="syllabus-details">
+                    <h4><i class="fas fa-tools"></i> Practical (30 marks)</h4>
+                    <ul>
+                        <li>Experiments (15 marks): Ohm’s law, meter bridge, potentiometer, LCR resonance, etc.</li>
+                        <li>Project Work (10 marks): Topics like solar cells, magnetic levitation.</li>
+                        <li>Practical File (5 marks): Record experiments with diagrams and observations.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="subject" id="chemistry">
+                <h3>Chemistry Syllabus 2025-26</h3>
+                <div class="syllabus-details">
+                    <h4><i class="fas fa-atom"></i> Theory (70 marks, 3 hours)</h4>
+                    <ul>
+                        <li>Physical Chemistry (25 marks): Solid State, Solutions, Electrochemistry, Chemical Kinetics, Surface Chemistry.</li>
+                        <li>Inorganic Chemistry (20 marks): p-Block Elements (Groups 15-18), d & f Block Elements.</li>
+                        <li>Organic Chemistry (25 marks): Haloalkanes & Haloarenes, Alcohols/Phenols/Ethers, Aldehydes/Ketones/Carboxylic Acids, Amines, Biomolecules, Polymers & Chemistry in Everyday Life.</li>
+                    </ul>
+                </div>
+                <div class="syllabus-details">
+                    <h4><i class="fas fa-vial"></i> Practical (30 marks)</h4>
+                    <ul>
+                        <li>Experiments (15 marks): Titration, qualitative analysis, functional group tests.</li>
+                        <li>Project Work (10 marks): Environmental chemistry, organic synthesis.</li>
+                        <li>Practical File (5 marks): Detailed experiment records.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="subject" id="math">
+                <h3>Mathematics Syllabus 2025-26</h3>
+                <div class="syllabus-details">
+                    <h4><i class="fas fa-calculator"></i> Theory (80 marks, 3 hours)</h4>
+                    <ul>
+                        <li>Section A (65 marks): Relations & Functions, Algebra, Calculus, Probability, Vectors, 3D Geometry, Application of Integrals.</li>
+                        <li>Section B (15 marks, optional): Conic Sections, 3D Geometry, Mathematical Reasoning.</li>
+                        <li>Section C (15 marks, optional): Statistics, Linear Programming, Financial Mathematics.</li>
+                    </ul>
+                </div>
+                <div class="syllabus-details">
+                    <h4><i class="fas fa-project-diagram"></i> Project Work (20 marks)</h4>
+                    <ul>
+                        <li>Two projects on topics like matrices, calculus, or statistics.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="resources">
+        <div class="section-header">
+            <h2 class="section-title">Learning Resources</h2>
+            <p class="section-subtitle">Curated materials to support your academic journey</p>
+        </div>
+        <div class="resources-grid">
+            <div class="resource-card">
+                <div class="resource-image">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="resource-content">
+                    <h3>Official Syllabus</h3>
+                    <p>Download the complete ISC Class 12 syllabus documents for all subjects in PDF format.</p>
+                    <a href="https://cisceboard.org/downloads.html" class="resource-link" target="_blank">Download Now <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="resource-card">
+                <div class="resource-image">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="resource-content">
+                    <h3>Textbook Solutions</h3>
+                    <p>Access chapter-wise solutions for all prescribed textbooks with detailed explanations.</p>
+                    <a href="https://cisceboard.org/Default.html" class="resource-link" target="_blank">View Solutions <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="resource-card">
+                <div class="resource-image">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <div class="resource-content">
+                    <h3>Online Practice</h3>
+                    <p>Interactive quizzes and practice tests to help you master each topic in the syllabus.</p>
+                    <a href="https://cisceboard.org/Default.html" class="resource-link" target="_blank">Start Practicing <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="resource-card">
+                <div class="resource-image">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="resource-content">
+                    <h3>Video Lectures</h3>
+                    <p>Comprehensive video lessons covering complex topics with visual explanations.</p>
+                    <a href="https://www.youtube.com/results?search_query=ISC+Class+12" class="resource-link" target="_blank">Watch Lectures <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>NeoSDA</h3>
+                <p>AI-powered educational platform designed to revolutionize learning for ISC Class 12 students.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#ai-chat">AI Assistant</a>
+                <a href="#syllabus">Syllabus</a>
+                <a href="#resources">Resources</a>
+            </div>
+            <div class="footer-column">
+                <h3>Subjects</h3>
+                <a href="#syllabus">Physics</a>
+                <a href="#syllabus">Chemistry</a>
+                <a href="#syllabus">Mathematics</a>
+                <a href="#resources">Study Materials</a>
+            </div>
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p>Created by <span class="creator">Hardrik Thomas (_shift_xd_)</span></p>
+                <a href="mailto:contact@neosda.com">contact@neosda.com</a>
+                <a href="tel:+919876543210">+91 98765 43210</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 NeoSDA. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const mobileNav = document.querySelector('.mobile-nav');
+            const closeMenuBtn = document.querySelector('.close-menu');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileNav.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            closeMenuBtn.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Close mobile menu when clicking a link
+            const mobileLinks = document.querySelectorAll('.mobile-nav a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update active nav link
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // Syllabus tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const subjects = document.querySelectorAll('.subject');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const subject = btn.getAttribute('data-subject');
+                    
+                    // Update active tab
+                    tabBtns.forEach(tabBtn => {
+                        tabBtn.classList.remove('active');
+                    });
+                    btn.classList.add('active');
+                    
+                    // Show selected subject
+                    subjects.forEach(sub => {
+                        sub.classList.remove('active');
+                    });
+                    document.getElementById(subject).classList.add('active');
+                });
+            });
+            
+            // Chat functionality
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendBtn = document.getElementById('send-btn');
+            const uploadBtn = document.getElementById('upload-btn');
+            const imageUpload = document.getElementById('image-upload');
+            const typingIndicator = document.getElementById('typing-indicator');
+            
+            // API Key
+            const API_KEY = 'replace me ';
+            const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+            const siteUrl = window.location.href;
+            const siteName = 'ff';
+            
+            let currentImage = null;
+            
+            // Add message to chat
+            function addMessage(content, sender, image = null) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(sender + '-message');
+                
+                if (sender === 'ai') {
+                    messageDiv.innerHTML = `<span class="author">NEOSDA</span> ${content}`;
+                } else {
+                    if (image) {
+                        messageDiv.innerHTML = `
+                            <div>${content}</div>
+                            <img src="${image}" alt="Uploaded image" class="message-image">
+                        `;
+                    } else {
+                        messageDiv.textContent = content;
+                    }
+                }
+                
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Event listeners for chat
+            sendBtn.addEventListener('click', async () => {
+                const message = userInput.value.trim();
+                if (!message && !currentImage) {
+                    alert('Please enter a message or upload an image');
+                    return;
+                }
+                
+                // Add user message to chat
+                addMessage(message, 'user', currentImage);
+                
+                // Show typing indicator
+                typingIndicator.style.display = 'flex';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Clear input and reset image
+                userInput.value = '';
+                currentImage = null;
+                
+                try {
+                    // Call OpenRouter API
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${API_KEY}`,
+                            'HTTP-Referer': siteUrl,
+                            'X-Title': siteName,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: 'google/gemma-3n-e2b-it:free',
+                            messages: [
+                                {
+                                    role: 'user',
+                                    content: `ISC Class 12 Syllabus Context:
+                                        Physics: Electrostatics, Current Electricity, Magnetic Effects, EM Induction & AC, EM Waves, Optics, Dual Nature, Atoms & Nuclei, Electronic Devices.
+                                        Chemistry: Physical Chemistry, Inorganic Chemistry, Organic Chemistry.
+                                        Mathematics: Relations & Functions, Algebra, Calculus, Probability, Vectors, 3D Geometry, Application of Integrals; Optional topics.
+                                        
+                                        User question: ${message}`
+                                }
+                            ]
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('API request failed with status: ' + response.status);
+                    }
+                    
+                    const data = await response.json();
+                    const aiResponse = data.choices[0].message.content;
+                    
+                    // Add to chat UI
+                    addMessage(aiResponse, 'ai');
+                } catch (error) {
+                    console.error('Error:', error);
+                    addMessage('Error: ' + error.message, 'ai');
+                } finally {
+                    // Hide typing indicator
+                    typingIndicator.style.display = 'none';
+                }
+            });
+            
+            // Image upload
+            uploadBtn.addEventListener('click', () => {
+                imageUpload.click();
+            });
+            
+            imageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        currentImage = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Also allow sending with Enter key
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendBtn.click();
+                }
+            });
+            
+            // Animation on scroll
+            function animateOnScroll() {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    if (position.top < window.innerHeight * 0.9) {
+                        element.classList.add('animated');
+                    }
+                });
+            }
+            
+            // Initial check
+            animateOnScroll();
+            
+            // Listen for scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>
